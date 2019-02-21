@@ -92,8 +92,11 @@ impl ElementImpl<BaseTransform> for Perf {}
 impl BaseTransformImpl<BaseTransform> for Perf {
     fn transform_ip(&self, _element: &BaseTransform, _buf: &mut gst::BufferRef)-> gst::FlowReturn {
         let time = gst::util_get_timestamp();
+        let mut state = self.state.lock().unwrap();
 
-        gst_info!(self.cat, obj: _element, "Current Timestamp is: {}", time);
+        gst_info!(self.cat, obj: _element, "Current Timestamp is: {}, and last timestamp was: {}", time, state.prev_timestamp);
+
+        state.prev_timestamp = time;
 
         return gst::FlowReturn::Ok
     }
