@@ -24,8 +24,24 @@ use gobject_subclass::object::*;
 use gst_plugin::base_transform::*;
 use gst_plugin::element::*;
 
+use std::sync::Mutex;
+
+#[derive(Debug)]
+struct State {
+    prev_timestamp: gst::ClockTime,
+}
+
+impl Default for State {
+    fn default() -> Self {
+        Self {
+            prev_timestamp: gst::CLOCK_TIME_NONE,
+        }
+    }
+}
+
 struct Perf {
     cat: gst::DebugCategory,
+    state: Mutex<State>,
 }
 
 impl Perf {
@@ -36,6 +52,7 @@ impl Perf {
                 gst::DebugColorFlags::empty(),
                 "Rust RidgeRun Perf element",
             ),
+            state: Mutex::new(State::default()),
         })
     }
     fn class_init(klass: &mut BaseTransformClass) {
