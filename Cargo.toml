@@ -1,0 +1,17 @@
+[package]
+name = "gst-rs-perf"
+version = "0.1.0"
+authors = ["Carlos Rodriguez <carlos.rodriguez@ridgerun.com>"]
+repository = "https://github.com/RidgeRun/gst-perf-rs"
+edition = "2018"
+license = "LGPL"
+
+[dependencies]
+gobject-subclass = "0.2"
+gst-plugin = "0.3.2"
+gstreamer = "0.12"
+
+[lib]
+name = "gstrsperf"
+crate-type = ["cdylib"]
+path = "src/lib.rs"
